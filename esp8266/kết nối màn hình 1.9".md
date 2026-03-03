@@ -140,15 +140,25 @@ void loop() {
     sprintf(timeString, "%02d:%02d:%02d", timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
 
     if (strcmp(timeString, lastTimeString) != 0) {
-        // Nạp font to
         tft.loadFont(bigFont);
         tft.setTextColor(TFT_ORANGE, TFT_BLACK);
-        tft.drawString(timeString, 25, 80);
+        
+        // Thiết lập vùng xóa nền (padding) rộng 300px (320px - 10px lề trái - 10px lề phải)
+        tft.setTextPadding(300); 
+
+        // Đặt điểm neo (anchor) của text vào chính giữa tâm (Middle Center)
+        tft.setTextDatum(MC_DATUM); 
+
+        // Vẽ chữ ở tọa độ tâm X = 160 (giữa màn hình), tâm Y = 100 (đẩy xuống dưới ngày tháng)
+        tft.drawString(timeString, 160, 100);
+        
+        // Trả lại các thiết lập mặc định (Top Left) để không làm lệch tọa độ của phần in Ngày Tháng
+        tft.setTextPadding(0); 
+        tft.setTextDatum(TL_DATUM); 
         tft.unloadFont();
         
         strcpy(lastTimeString, timeString);
     }
-  }
 
   delay(200); 
 }
